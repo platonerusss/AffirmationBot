@@ -9,3 +9,13 @@ def add_affirmation(items, text):
 
 def get_all_affirmations_text(items):
     return '\n'.join(items)
+
+def create_default_user_settings():
+    return {
+        "enabled": False,
+        "time": "09:00"
+    }
+
+def ensure_user_exists(users, user_id):
+    if user_id not in users:
+        users[user_id] = create_default_user_settings()

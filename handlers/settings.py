@@ -1,6 +1,7 @@
 from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
+from services import ensure_user_exists
 
 from storage import load_users, save_users
 
@@ -10,12 +11,8 @@ router = Router()
 async def settings_handler(message: Message):
     users = load_users()
     user_id = str(message.from_user.id)
-    if user_id not in users:
-        users[user_id] = {
-    "enabled": False,
-    "time": "09:00"
-}
-        save_users(users)
+    ensure_user_exists(users, user_id)
+    save_users(users)
 
     settings = users[user_id]
     status = "включена" if settings["enabled"] else "выключена"
@@ -29,11 +26,7 @@ async def settings_handler(message: Message):
 async def on_handler(message: Message):
     users = load_users()
     user_id = str(message.from_user.id)
-    if user_id not in users:
-        users[user_id] = {
-    "enabled": False,
-    "time": "09:00"
-}
+    ensure_user_exists(users, user_id)
     users[user_id]["enabled"] = True
     save_users(users)
     await message.answer("Ежедневная аффирмация включена")
@@ -43,11 +36,7 @@ async def on_handler(message: Message):
 async def off_handler(message: Message):
     users = load_users()
     user_id = str(message.from_user.id)
-    if user_id not in users:
-        users[user_id] = {
-    "enabled": False,
-    "time": "09:00"
-}
+    ensure_user_exists(users, user_id)
     users[user_id]["enabled"] = False
     save_users(users)
     await message.answer("Ежедневная аффирмация выключена")
