@@ -12,4 +12,5 @@ if BOT_TOKEN is None:
     raise ValueError("BOT_TOKEN не найден в .env")
 
 FILE_NAME = BASE_DIR / "affirmations.json"
+USERS_FILE = BASE_DIR / "users.json"
 APP_NAME = "Affirmation Bot"
