@@ -65,7 +65,7 @@ def set_user_enabled(user_id, enabled):
     connection.close()
 
 
-def set_user_time(user_id, time):
+def set_user_time(user_id, new_time):
     ensure_user_exists(user_id)
     connection = get_connection()
     cursor = connection.cursor()
@@ -73,6 +73,18 @@ def set_user_time(user_id, time):
         UPDATE users
         SET time = ?
         WHERE user_id = ?
-""", (time, user_id))
+""", (new_time, user_id))
     connection.commit()
     connection.close()
+
+
+def get_all_users():
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute("""
+        SELECT user_id, enabled, time
+        FROM users
+""")
+    rows = cursor.fetchall()
+    connection.close()
+    return rows

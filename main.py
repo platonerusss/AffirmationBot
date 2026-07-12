@@ -9,6 +9,7 @@ from handlers.common import router as common_router
 from handlers.affirmations import router as affirmation_router
 from handlers.help import router as help_router
 from handlers.settings import router as settings_router
+from handlers.debug import router as debug_router
 from database import init_db
 
 bot = Bot(token=BOT_TOKEN)
@@ -17,6 +18,7 @@ dp.include_router(start_router)
 dp.include_router(affirmation_router)
 dp.include_router(help_router)
 dp.include_router(settings_router)
+dp.include_router(debug_router)
 dp.include_router(common_router)
 
 
