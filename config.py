@@ -13,5 +13,4 @@ if BOT_TOKEN is None:
 
 DATABASE_FILE = BASE_DIR / "bot.db"
 FILE_NAME = BASE_DIR / "affirmations.json"
-USERS_FILE = BASE_DIR / "users.json"
 APP_NAME = "Affirmation Bot"
