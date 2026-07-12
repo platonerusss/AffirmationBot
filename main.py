@@ -9,7 +9,7 @@ from handlers.common import router as common_router
 from handlers.affirmations import router as affirmation_router
 from handlers.help import router as help_router
 from handlers.settings import router as settings_router
-
+from database import init_db
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
@@ -21,6 +21,7 @@ dp.include_router(common_router)
 
 
 async def main():
+    init_db()
     await dp.start_polling(bot)
 
 
