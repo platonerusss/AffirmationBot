@@ -11,6 +11,7 @@ from handlers.help import router as help_router
 from handlers.settings import router as settings_router
 from handlers.debug import router as debug_router
 from database import init_db
+from scheduler import check_daily_affirmations
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
@@ -24,6 +25,7 @@ dp.include_router(common_router)
 
 async def main():
     init_db()
+    asyncio.create_task(check_daily_affirmations(bot))
     await dp.start_polling(bot)
 
 
