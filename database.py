@@ -14,7 +14,8 @@ def init_db():
         CREATE TABLE IF NOT EXISTS users (
             user_id INTEGER PRIMARY KEY,
             enabled INTEGER NOT NULL DEFAULT 0,
-            time TEXT NOT NULL DEFAULT '09:00'
+            time TEXT NOT NULL DEFAULT '09:00',
+            last_sent_date TEXT
         )
     """)
     connection.commit()
@@ -82,9 +83,22 @@ def get_all_users():
     connection = get_connection()
     cursor = connection.cursor()
     cursor.execute("""
-        SELECT user_id, enabled, time
+        SELECT user_id, enabled, time, last_sent_date
         FROM users
 """)
     rows = cursor.fetchall()
     connection.close()
     return rows
+
+def set_user_last_sent_date(user_id, date):
+    ensure_user_exists(user_id)
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute("""
+        UPDATE users
+        SET last_sent_date = ?
+        WHERE user_id = ?
+""", (date, user_id))
+    connection.commit()
+    connection.close()
+

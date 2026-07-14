@@ -13,7 +13,7 @@ async def debug_users_handler(message: Message):
         await message.answer("Пользователей пока нет")
         return
     text = "Пользователи в базе:\n\n"
-    for user_id, enabled, time in rows:
+    for user_id, enabled, time, last_sent_date in rows:
         status = "включена" if enabled else "выключена"
         text += f"Пользователь: {user_id}, ежедневная аффирмация: {status}, время: {time}\n"
     await message.answer(text)
