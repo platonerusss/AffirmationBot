@@ -77,6 +77,8 @@ async def settime_handler(message: Message):
         await message.answer("Неверное время. Напиши время так: /settime 09:00")
         return
     set_user_time(user_id, new_time)
-    await message.answer(f"Время ежедневной аффирмации изменено на {new_time}")
+    settings = get_user_settings(user_id)
+    text = make_text_settings(settings)
+    await message.answer(text, reply_markup=settings_keyboard)
 
     
