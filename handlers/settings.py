@@ -108,6 +108,34 @@ async def mode_male_callback(callback: CallbackQuery):
     await callback.answer("Включён мужской режим")
 
 
+@router.message(Command("female"))
+async def female_handler(message: Message):
+    user_id = message.from_user.id
+    set_user_mode(user_id, "female")
+
+    settings = get_user_settings(user_id)
+    text = make_text_settings(settings)
+
+    await message.answer(
+        "Включён женский режим аффирмаций.\n\n" + text,
+        reply_markup=settings_keyboard
+    )
+
+
+@router.message(Command("male"))
+async def male_handler(message: Message):
+    user_id = message.from_user.id
+    set_user_mode(user_id, "male")
+
+    settings = get_user_settings(user_id)
+    text = make_text_settings(settings)
+
+    await message.answer(
+        "Включён мужской режим аффирмаций.\n\n" + text,
+        reply_markup=settings_keyboard
+    )
+
+
 @router.message(Command("settime"))
 async def settime_handler(message: Message):
     user_id = message.from_user.id
