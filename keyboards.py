@@ -36,6 +36,16 @@ settings_keyboard = InlineKeyboardMarkup(
                 text="Выключить",
                 callback_data="settings_off"
             )
+        ],
+        [
+            InlineKeyboardButton(
+                text="Женский режим",
+                callback_data="mode_female"
+            ),
+            InlineKeyboardButton(
+                text="Мужской режим",
+                callback_data="mode_male"
+            )
         ]
     ]
 )
