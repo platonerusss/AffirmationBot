@@ -22,6 +22,28 @@ async def send_random_affirmation(message: Message):
     await message.answer(text, reply_markup=again_affirmation_keyboard)
 
 
+MAX_MESSAGE_LENGTH = 3500
+
+
+def split_text(text, max_length=MAX_MESSAGE_LENGTH):
+    parts = []
+    current_part = ""
+
+    for line in text.split("\n"):
+        if len(current_part) + len(line) + 1 > max_length:
+            parts.append(current_part)
+            current_part = line
+        else:
+            if current_part:
+                current_part += "\n"
+            current_part += line
+
+    if current_part:
+        parts.append(current_part)
+
+    return parts
+
+
 async def send_all_affirmations(message: Message):
     user_id = message.from_user.id
     settings = get_user_settings(user_id)
@@ -30,7 +52,8 @@ async def send_all_affirmations(message: Message):
     data = load_affirmations()
     text = get_all_affirmations_text(data, mode)
 
-    await message.answer(text)
+    for part in split_text(text):
+        await message.answer(part)
 
 
 @router.message(Command("affirmation"))
