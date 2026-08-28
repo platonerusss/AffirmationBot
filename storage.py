@@ -1,7 +1,10 @@
 import json
+import shutil
 
-from config import AFFIRMATIONS_FILE
+from config import AFFIRMATIONS_FILE, BASE_DIR
 
+
+SOURCE_AFFIRMATIONS_FILE = BASE_DIR / "affirmations.json"
 
 DEFAULT_AFFIRMATIONS = {
     "female": [],
@@ -9,12 +12,43 @@ DEFAULT_AFFIRMATIONS = {
 }
 
 
-def load_affirmations():
-    if not AFFIRMATIONS_FILE.exists():
-        save_affirmations(DEFAULT_AFFIRMATIONS)
+def has_affirmations(data):
+    return bool(data.get("female")) or bool(data.get("male"))
 
-    with open(AFFIRMATIONS_FILE, "r", encoding="utf-8") as file:
+
+def read_json_file(path):
+    with open(path, "r", encoding="utf-8") as file:
         return json.load(file)
+
+
+def ensure_affirmations_file():
+    if not AFFIRMATIONS_FILE.exists():
+        if SOURCE_AFFIRMATIONS_FILE.exists() and SOURCE_AFFIRMATIONS_FILE != AFFIRMATIONS_FILE:
+            shutil.copy(SOURCE_AFFIRMATIONS_FILE, AFFIRMATIONS_FILE)
+            return
+
+        save_affirmations(DEFAULT_AFFIRMATIONS)
+        return
+
+    data = read_json_file(AFFIRMATIONS_FILE)
+
+    if has_affirmations(data):
+        return
+
+    if SOURCE_AFFIRMATIONS_FILE.exists() and SOURCE_AFFIRMATIONS_FILE != AFFIRMATIONS_FILE:
+        source_data = read_json_file(SOURCE_AFFIRMATIONS_FILE)
+
+        if has_affirmations(source_data):
+            save_affirmations(source_data)
+            return
+
+    save_affirmations(DEFAULT_AFFIRMATIONS)
+
+
+def load_affirmations():
+    ensure_affirmations_file()
+
+    return read_json_file(AFFIRMATIONS_FILE)
 
 
 def save_affirmations(items):
