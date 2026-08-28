@@ -4,6 +4,11 @@ import os
 
 BASE_DIR = Path(__file__).parent
 
+DATA_DIR = Path(os.getenv("DATA_DIR", BASE_DIR))
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+AFFIRMATIONS_FILE = DATA_DIR / "affirmations.json"
+
 load_dotenv(BASE_DIR / ".env")
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")

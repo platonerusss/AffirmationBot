@@ -1,12 +1,22 @@
 import json
-from config import FILE_NAME
+
+from config import AFFIRMATIONS_FILE
+
+
+DEFAULT_AFFIRMATIONS = {
+    "female": [],
+    "male": []
+}
 
 
 def load_affirmations():
-    with open(FILE_NAME, "r", encoding="utf-8") as file:
+    if not AFFIRMATIONS_FILE.exists():
+        save_affirmations(DEFAULT_AFFIRMATIONS)
+
+    with open(AFFIRMATIONS_FILE, "r", encoding="utf-8") as file:
         return json.load(file)
 
 
 def save_affirmations(items):
-    with open(FILE_NAME, "w", encoding="utf-8") as file:
+    with open(AFFIRMATIONS_FILE, "w", encoding="utf-8") as file:
         json.dump(items, file, ensure_ascii=False, indent=4)
